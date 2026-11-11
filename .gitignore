@@ -1,0 +1,7 @@
+firmware/.pio/
+firmware/.pio-core/
+pcb/gerbers/
+*.kicad_prl
+fp-info-cache
+*-backups/
+.DS_Store

@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 380" width="720" height="380">
+<title>Coin light board circuit</title>
+<style>
+  .w { stroke: #18202e; stroke-width: 1.6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .thick { stroke: #18202e; stroke-width: 3.2; fill: none; stroke-linecap: round; }
+  .box, .pad { stroke: #18202e; stroke-width: 1.6; fill: #ffffff; }
+  .dot { fill: #18202e; }
+  text { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12px; fill: #18202e; }
+  text.m { fill: #5a6577; }
+  .red { fill: #cf3a30; stroke: #18202e; stroke-width: 1.2; }
+  .blue { fill: #2460d8; stroke: #18202e; stroke-width: 1.2; }
+</style>
+<rect width="720" height="380" fill="#ffffff"/>
+<!-- rails -->
+<path class="w" d="M90,50 H634"/>
+<path class="w" d="M90,350 H634"/>
+<path class="w" d="M90,170 H350 V200"/>
+<!-- BT2 -->
+<path class="w" d="M90,50 V95 M72,95 H108 M90,107 V170"/>
+<path class="thick" d="M80,107 H100"/>
+<!-- BT1 -->
+<path class="w" d="M90,170 V245 M72,245 H108 M90,257 V350"/>
+<path class="thick" d="M80,257 H100"/>
+<!-- C1 -->
+<path class="w" d="M175,170 V252 M161,252 H189 M161,262 H189 M175,262 V350"/>
+<!-- U1 -->
+<rect class="box" x="290" y="200" width="120" height="120"/>
+<path class="w" d="M350,320 V350"/>
+<path class="w" d="M290,230 H261"/>
+<circle class="pad" cx="257" cy="230" r="4"/>
+<!-- button -->
+<path class="w" d="M290,275 H235 V292 M235,321 V350 M235,318 L248,297"/>
+<circle class="pad" cx="235" cy="295" r="3"/>
+<circle class="pad" cx="235" cy="318" r="3"/>
+<!-- red channel -->
+<path class="w" d="M410,230 H430 M474,230 H500 M500,222 L522,206 V156 M510,156 H534 M522,134 V114 M522,70 V50 M500,238 L522,254 V350"/>
+<rect class="box" x="430" y="222" width="44" height="16"/>
+<path class="thick" d="M500,214 V246"/>
+<polygon class="dot" points="522,254 513.7,251.7 517.3,246.9"/>
+<polygon class="red" points="510,134 534,134 522,156"/>
+<rect class="box" x="514" y="70" width="16" height="44"/>
+<!-- blue channel -->
+<path class="w" d="M410,290 H514 A8,8 0 0 1 530,290 H548 M592,290 H612 M612,282 L634,266 V156 M622,156 H646 M634,134 V114 M634,70 V50 M612,298 L634,314 V350"/>
+<rect class="box" x="548" y="282" width="44" height="16"/>
+<path class="thick" d="M612,274 V306"/>
+<polygon class="dot" points="634,314 625.7,311.7 629.3,306.9"/>
+<polygon class="blue" points="622,134 646,134 634,156"/>
+<rect class="box" x="626" y="70" width="16" height="44"/>
+<!-- junctions -->
+<circle class="dot" cx="90" cy="170" r="3"/><circle class="dot" cx="175" cy="170" r="3"/>
+<circle class="dot" cx="175" cy="350" r="3"/><circle class="dot" cx="235" cy="350" r="3"/>
+<circle class="dot" cx="350" cy="350" r="3"/><circle class="dot" cx="522" cy="50" r="3"/>
+<circle class="dot" cx="522" cy="350" r="3"/>
+<!-- labels -->
+<text x="300" y="40" text-anchor="middle">+6 V  LED rail</text>
+<text x="245" y="162" text-anchor="middle">+3 V  chip supply</text>
+<text x="290" y="370" text-anchor="middle">GND</text>
+<text x="64" y="99" text-anchor="end">BT2</text><text class="m" x="64" y="113" text-anchor="end">CR2032</text><text x="114" y="92">+</text>
+<text x="64" y="249" text-anchor="end">BT1</text><text class="m" x="64" y="263" text-anchor="end">CR2032</text><text x="114" y="242">+</text>
+<text x="165" y="287" text-anchor="end">C1</text><text class="m" x="165" y="301" text-anchor="end">100 nF</text>
+<text x="350" y="244" text-anchor="middle">U1</text><text class="m" x="350" y="259" text-anchor="middle">ATtiny202</text>
+<text class="m" x="350" y="216" text-anchor="middle">VDD</text><text class="m" x="350" y="312" text-anchor="middle">GND</text>
+<text class="m" x="296" y="234">UPDI</text><text class="m" x="296" y="279">PA6</text>
+<text class="m" x="404" y="234" text-anchor="end">PA1</text><text class="m" x="404" y="294" text-anchor="end">PA2</text>
+<text class="m" x="247" y="234" text-anchor="end">pad</text>
+<text x="251" y="312">SW1</text>
+<text x="452" y="214" text-anchor="middle">R3 10 kΩ</text>
+<text x="570" y="274" text-anchor="middle">R4 10 kΩ</text>
+<text x="534" y="236">Q1</text><text x="646" y="296">Q2</text>
+<text x="538" y="88">R1</text><text class="m" x="538" y="102">820 Ω</text>
+<text x="652" y="88">R2</text><text class="m" x="652" y="102">620 Ω</text>
+<text x="542" y="150">D1 red</text><text x="654" y="150">D2 blue</text>
+</svg>
