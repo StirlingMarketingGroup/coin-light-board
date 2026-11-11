@@ -28,7 +28,7 @@ BACK, FRONT = pcbnew.F_Cu, pcbnew.B_Cu
 
 # The main board is 75 x 22 mm. A tab below the middle carries the button.
 BOARD_W, BOARD_H = 75.0, 22.0
-TAB_X0, TAB_X1, TAB_Y1 = 32.0, 43.2, 27.4
+TAB_X0, TAB_X1, TAB_Y1 = 31.4, 43.8, 27.4
 OUTLINE = [
     (0, 0), (BOARD_W, 0), (BOARD_W, BOARD_H), (TAB_X1, BOARD_H),
     (TAB_X1, TAB_Y1), (TAB_X0, TAB_Y1), (TAB_X0, BOARD_H), (0, BOARD_H),
@@ -39,15 +39,17 @@ OUTLINE = [
 LED_Y = 6.86
 RED_X = BOARD_W / 2 - 68.35 / 2
 BLUE_X = BOARD_W / 2 + 68.35 / 2
-LED_K_Y, LED_A_Y = LED_Y - 1.49, LED_Y + 1.49
+LED_K_Y, LED_A_Y = LED_Y - 0.94, LED_Y + 0.94
 
 POWER_W, GND_W, SIGNAL_W = 0.5, 0.4, 0.25
 VIA_D, VIA_DRILL = 0.6, 0.3
 
-LED = ("LED_SMD", "LED_1206_3216Metric_Pad1.42x1.75mm_HandSolder")
+LED = ("LED_SMD", "LED_0805_2012Metric")
 RES = ("Resistor_SMD", "R_0603_1608Metric")
 NPN = ("Package_TO_SOT_SMD", "SOT-23")
-HOLDER = ("Battery", "BatteryHolder_Keystone_3034_1x20mm")
+# Footprints from JLCPCB's own library, kept in lib.pretty next to this file.
+HOLDER = ("lib", "BAT-SMD_MY-2032-08")
+BUTTON = ("lib", "KEY-SMD_4P-L6.0-W6.0-P4.50-LS8.6")
 PAD = ("TestPoint", "TestPoint_Pad_D1.5mm")
 
 # ref: (side, (library, footprint), value, x, y, rotation, {pad: net})
@@ -69,9 +71,9 @@ PARTS = {
     "Q1": (BACK, NPN, "MMBT3904", 40.6, 17.8, 0, {"1": "B1", "2": "GND", "3": "C1"}),
     "R1": (BACK, RES, "820", 41.54, 14.4, 90, {"1": "C1", "2": "RK"}),
     # 6 x 6 mm push button on the tab. Its stem height is chosen to reach
-    # through the back of the coin.
-    "SW1": (BACK, ("Button_Switch_SMD", "SW_SPST_PTS645Sx43SMTR92"), "6x6 tact", 37.6, 23.7, 0,
-            {"1": "BTN", "2": "GND"}),
+    # through the back of the coin. Only two diagonal pads are wired: in a
+    # four-pad button, diagonal pads are always on opposite contacts.
+    "SW1": (BACK, BUTTON, "6x6 tact", 37.6, 23.7, 0, {"1": "BTN", "4": "GND"}),
     # LEDs on the front side, one under each light window. Pad 1 is the cathode.
     "D1": (FRONT, LED, "red", RED_X, LED_Y, 270, {"1": "RK", "2": "VLED"}),
     "D2": (FRONT, LED, "blue", BLUE_X, LED_Y, 270, {"1": "BK", "2": "VLED"}),
@@ -84,29 +86,27 @@ PARTS = {
 # (net, side, width, [points...])
 TRACES = [
     # 3 V: BT1's right tab to the capacitor and the chip.
-    ("VMID", BACK, POWER_W, [(29.48, 11.78), (31.4, 11.78), (31.4, 13.47), (33.09, 13.47)]),
-    # 3 V: along the top edge into BT2's round - pad.
-    ("VMID", BACK, POWER_W, [(29.48, 9.0), (29.48, 1.2), (50.5, 1.2), (50.5, 5.0)]),
-    # 3 V: BT1's two tabs, joined on the front side.
-    ("VMID", BACK, POWER_W, [(7.52, 13.0), (7.52, 14.6)]),
-    ("VMID", BACK, POWER_W, [(29.48, 13.0), (29.48, 14.6)]),
-    ("VMID", FRONT, POWER_W, [(7.52, 14.6), (29.48, 14.6)]),
+    ("VMID", BACK, POWER_W, [(29.38, 11.78), (31.4, 11.78), (31.4, 13.47), (33.09, 13.47)]),
+    # 3 V: BT1's two tabs, joined on the front side, then on to BT2's round
+    # - pad. No trace runs under a battery on the back side: the rim of a
+    # coin cell is its + side and must touch nothing but solder mask.
+    ("VMID", BACK, POWER_W, [(7.62, 13.0), (7.62, 14.6)]),
+    ("VMID", BACK, POWER_W, [(29.38, 13.0), (29.38, 14.6)]),
+    ("VMID", FRONT, POWER_W, [(7.62, 14.6), (43.2, 14.6), (43.2, 13.3), (56.5, 13.3), (56.5, 10.0)]),
     # 3 V to its programming pad.
     ("VMID", BACK, SIGNAL_W, [(33.09, 13.47), (33.09, 11.0)]),
     # 6 V: BT2's two tabs drop to a rail on the front side that reaches both LED anodes.
-    ("VLED", BACK, POWER_W, [(45.52, 13.0), (45.52, 14.6)]),
-    ("VLED", BACK, POWER_W, [(67.48, 13.0), (67.48, 14.6)]),
-    ("VLED", FRONT, POWER_W, [(45.52, 14.6), (45.52, 16.0)]),
-    ("VLED", FRONT, POWER_W, [(67.48, 14.6), (67.48, 16.0)]),
+    ("VLED", BACK, POWER_W, [(45.62, 13.0), (45.62, 14.6)]),
+    ("VLED", BACK, POWER_W, [(67.38, 13.0), (67.38, 14.6)]),
+    ("VLED", FRONT, POWER_W, [(45.62, 14.6), (45.62, 16.0)]),
+    ("VLED", FRONT, POWER_W, [(67.38, 14.6), (67.38, 16.0)]),
     ("VLED", FRONT, POWER_W, [(RED_X, LED_A_Y), (RED_X, 16.0), (BLUE_X, 16.0), (BLUE_X, LED_A_Y)]),
     # Ground.
     ("GND", BACK, GND_W, [(31.4, 10.22), (31.4, 8.53), (33.09, 8.53)]),
     ("GND", BACK, GND_W, [(31.4, 8.53), (31.4, 7.0)]),
-    ("GND", BACK, GND_W, [(39.66, 5.15), (39.66, 6.6)]),
+    ("GND", BACK, GND_W, [(39.66, 5.15), (39.66, 7.0)]),
     ("GND", BACK, GND_W, [(39.66, 18.75), (39.66, 20.2)]),
-    ("GND", BACK, GND_W, [(18.5, 19.5), (18.5, 21.0)]),
-    ("GND", BACK, GND_W, [(16.0, 19.0), (16.0, 21.0)]),
-    ("GND", BACK, GND_W, [(33.62, 25.95), (41.58, 25.95)]),
+    ("GND", BACK, GND_W, [(41.9, 25.95), (40.2, 25.95)]),
     # Blue channel.
     ("PA2", BACK, SIGNAL_W, [(36.91, 8.53), (36.91, 6.42)]),
     ("B2", BACK, SIGNAL_W, [(36.91, 4.78), (36.91, 3.25), (39.66, 3.25)]),
@@ -120,18 +120,20 @@ TRACES = [
     ("RK", BACK, SIGNAL_W, [(41.54, 13.58), (41.54, 12.3)]),
     ("RK", FRONT, SIGNAL_W, [(41.54, 12.3), (38.5, 12.3), (38.5, LED_K_Y), (RED_X, LED_K_Y)]),
     # Button and programming pin.
-    ("BTN", BACK, SIGNAL_W, [(34.36, 13.47), (34.36, 21.45)]),
-    ("BTN", BACK, SIGNAL_W, [(33.62, 21.45), (41.58, 21.45)]),
+    ("BTN", BACK, SIGNAL_W, [(34.37, 13.47), (34.37, 20.0), (33.3, 20.0), (33.3, 21.45)]),
     ("UPDI", BACK, SIGNAL_W, [(35.63, 8.53), (35.63, 11.0)]),
 ]
 
 # (net, x, y) joins the two sides. GND vias land in the ground plane on the front.
 VIAS = [
-    ("VMID", 7.52, 14.6), ("VMID", 29.48, 14.6), ("VMID", 33.09, 11.0),
-    ("VLED", 45.52, 14.6), ("VLED", 67.48, 14.6),
+    ("VMID", 7.62, 14.6), ("VMID", 29.38, 14.6), ("VMID", 33.09, 11.0),
+    # Inside BT2's round - pad.
+    ("VMID", 56.5, 12.0), ("VMID", 56.5, 10.0),
+    ("VLED", 45.62, 14.6), ("VLED", 67.38, 14.6),
     ("BK", 41.54, 9.7), ("RK", 41.54, 12.3), ("UPDI", 35.63, 11.0),
-    ("GND", 31.4, 7.0), ("GND", 39.66, 6.6), ("GND", 39.66, 20.2),
-    ("GND", 18.5, 21.0), ("GND", 16.0, 21.0), ("GND", 37.6, 25.95),
+    ("GND", 31.4, 7.0), ("GND", 39.66, 7.0), ("GND", 39.66, 20.2), ("GND", 40.2, 25.95),
+    # Inside BT1's round - pad.
+    ("GND", 17.0, 11.0), ("GND", 20.0, 11.0),
 ]
 
 # (text, side, x, y)
@@ -164,7 +166,8 @@ def main():
         return nets[name]
 
     for ref, (side, (lib, name), value, x, y, rot, pads) in PARTS.items():
-        fp = pcbnew.FootprintLoad(os.path.join(FOOTPRINTS, lib + ".pretty"), name)
+        folder = HERE if lib == "lib" else FOOTPRINTS
+        fp = pcbnew.FootprintLoad(os.path.join(folder, lib + ".pretty"), name)
         if fp is None:
             sys.exit(f"footprint not found: {lib}:{name}")
         fp.SetFPID(pcbnew.LIB_ID(lib, name))

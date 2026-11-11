@@ -19,12 +19,11 @@ rm -rf gerbers coin-light-board-gerbers.zip && mkdir gerbers
 "$CLI" pcb export drill -o gerbers/ --format excellon --excellon-units mm "$BOARD"
 (cd gerbers && zip -q ../coin-light-board-gerbers.zip ./*)
 
-# JLCPCB's placement file. The battery holders are left out: they are
-# soldered by hand until a holder JLCPCB stocks is matched to the pads.
+# JLCPCB's placement file. The programming pads are bare copper, not parts.
 "$CLI" pcb export pos -o pos.csv --format csv --units mm --side both "$BOARD"
 {
 	echo "Designator,Mid X,Mid Y,Layer,Rotation"
-	tail -n +2 pos.csv | grep -v '^"BT' | grep -v '^"TP' |
+	tail -n +2 pos.csv | grep -v '^"TP' |
 		awk -F, '{ gsub(/"/, "", $1); printf "%s,%.3fmm,%.3fmm,%s,%d\n", $1, $4, $5, ($7 ~ /bottom/ ? "Bottom" : "Top"), $6 }'
 } > jlcpcb-cpl.csv
 rm pos.csv

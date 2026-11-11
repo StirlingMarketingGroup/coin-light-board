@@ -28,7 +28,7 @@ Revision A was a first test layout. It is kept under the git tag `rev-a`.
 | | |
 | --- | --- |
 | Board | 75 mm long, 22 mm wide |
-| Button tab | 11.2 mm wide. It goes 5.4 mm below the middle of the board. |
+| Button tab | 12.4 mm wide. It goes 5.4 mm below the middle of the board. |
 | Height with batteries | about 6 mm (estimate) |
 | Batteries | 2 × CR2032 |
 | Lights | 1 red LED and 1 blue LED, on the front side |
@@ -59,14 +59,14 @@ The board was sized for a coin that is 95.25 mm wide and 33.17 mm tall, with a m
 | Q1, Q2 | MMBT3904, SOT-23 | Back | C20526 | |
 | R3, R4 | 10 kΩ, 0603 | Back | C25804 | Confirm the part number on JLCPCB. |
 | C1 | 100 nF, 0603 | Back | C14663 | Confirm the part number on JLCPCB. |
-| R1 | 820 Ω, 0603 | Back | choose at order | Sets the red brightness, about 5 mA. |
-| R2 | 620 Ω, 0603 | Back | choose at order | Sets the blue brightness, about 5 mA. |
-| SW1 | 6 mm × 6 mm SMD push button | Back | choose at order | Choose the stem height to reach through the back of the coin. |
-| BT1, BT2 | CR2032 holder, Keystone 3034 pads | Back | not matched yet | Not in the JLCPCB placement file. Solder by hand. |
-| D1 | Red LED, 1206 | Front | choose at order | |
-| D2 | Blue LED, 1206 | Front | choose at order | |
+| R1 | 820 Ω, 0603 | Back | C23253 | Sets the red brightness, about 5 mA. |
+| R2 | 620 Ω, 0603 | Back | C23220 | Sets the blue brightness, about 5 mA. |
+| SW1 | TS-1102S-C-C-B push button, 6 × 6 × 5 mm | Back | C381039 | 5 mm tall for the test. The final height depends on the thickness of the coin's back. |
+| BT1, BT2 | MY-2032-08-R CR2032 holder | Back | C964832 | |
+| D1 | NCD0805R1 red LED, 0805 | Front | C84256 | |
+| D2 | KT-0805B blue LED, 0805 | Front | C2293 | |
 
-Parts are on both sides. JLCPCB's cheaper assembly service places one side only. For a few test boards, let JLCPCB place the back side and solder the two LEDs by hand.
+Parts are on both sides, so the order needs JLCPCB's Standard assembly service. The cheaper Economic service places one side only. [ORDERING.md](ORDERING.md) lists every choice for the order.
 
 ## Files
 
@@ -77,6 +77,9 @@ Parts are on both sides. JLCPCB's cheaper assembly service places one side only.
 | `pcb/export.sh` | Rebuilds the board, checks it, and writes the factory files. |
 | `pcb/coin-light-board-gerbers.zip` | Gerber and drill files for the bare board. |
 | `pcb/jlcpcb-bom.csv`, `pcb/jlcpcb-cpl.csv` | Parts list and placement file for JLCPCB assembly. |
+| `pcb/lib.pretty/` | The battery holder and button footprints, from JLCPCB's own library. |
+| `ORDERING.md` | How to order test boards from JLCPCB, step by step. |
+| `firmware/firmware.hex` | The compiled firmware, ready to load onto the chip. |
 | `firmware/src/main.c` | The firmware, about 60 lines of C. |
 | `firmware/build.sh` | Compiles the firmware in Docker. |
 
@@ -88,7 +91,7 @@ Firmware, with Docker running:
 firmware/build.sh
 ```
 
-The file for the chip is `firmware/.pio/build/attiny202/firmware.hex`. Load it through the `UPDI`, `3V` and `GND` pads on the front side with a UPDI programmer. **Take both batteries out first.** A programmer that powers the `3V` pad would push current into the lower battery.
+The file for the chip is `firmware/firmware.hex`. Load it through the `UPDI`, `3V` and `GND` pads on the front side with a UPDI programmer. **Take both batteries out first.** A programmer that powers the `3V` pad would push current into the lower battery.
 
 Board files, with KiCad 10 in `~/Applications/KiCad`:
 
@@ -103,6 +106,7 @@ pcb/export.sh
 - The lower battery also runs the chip, so it drains a little faster than the upper one while the lights flash.
 - If something holds the button down, the chip sleeps, but its pull-up resistor still draws about 0.1 mA. That would empty the lower battery in about three months.
 - Nothing protects the board from a battery put in upside down.
+- No trace runs under a battery on the back side. The rim of a coin cell is its `+` side, so only solder mask may sit under it.
 - There is no schematic file. The circuit drawing above and `build_board.py` are the design.
 - The positions and rotations in the JLCPCB placement file may need correcting in JLCPCB's preview, most of all for the two LEDs on the front side.
 
