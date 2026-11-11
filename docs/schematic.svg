@@ -33,19 +33,19 @@
 <circle class="pad" cx="235" cy="295" r="3"/>
 <circle class="pad" cx="235" cy="318" r="3"/>
 <!-- red channel -->
-<path class="w" d="M410,230 H430 M474,230 H500 M500,222 L522,206 V156 M510,156 H534 M522,134 V114 M522,70 V50 M500,238 L522,254 V350"/>
+<path class="w" d="M410,230 H430 M474,230 H500 M500,222 L522,206 V156 M522,112 V96 M510,96 H534 M522,74 V50 M500,238 L522,254 V350"/>
 <rect class="box" x="430" y="222" width="44" height="16"/>
 <path class="thick" d="M500,214 V246"/>
 <polygon class="dot" points="522,254 513.7,251.7 517.3,246.9"/>
-<polygon class="red" points="510,134 534,134 522,156"/>
-<rect class="box" x="514" y="70" width="16" height="44"/>
+<polygon class="red" points="510,74 534,74 522,96"/>
+<rect class="box" x="514" y="112" width="16" height="44"/>
 <!-- blue channel -->
-<path class="w" d="M410,290 H514 A8,8 0 0 1 530,290 H548 M592,290 H612 M612,282 L634,266 V156 M622,156 H646 M634,134 V114 M634,70 V50 M612,298 L634,314 V350"/>
+<path class="w" d="M410,290 H514 A8,8 0 0 1 530,290 H548 M592,290 H612 M612,282 L634,266 V156 M634,112 V96 M622,96 H646 M634,74 V50 M612,298 L634,314 V350"/>
 <rect class="box" x="548" y="282" width="44" height="16"/>
 <path class="thick" d="M612,274 V306"/>
 <polygon class="dot" points="634,314 625.7,311.7 629.3,306.9"/>
-<polygon class="blue" points="622,134 646,134 634,156"/>
-<rect class="box" x="626" y="70" width="16" height="44"/>
+<polygon class="blue" points="622,74 646,74 634,96"/>
+<rect class="box" x="626" y="112" width="16" height="44"/>
 <!-- junctions -->
 <circle class="dot" cx="90" cy="170" r="3"/><circle class="dot" cx="175" cy="170" r="3"/>
 <circle class="dot" cx="175" cy="350" r="3"/><circle class="dot" cx="235" cy="350" r="3"/>
@@ -67,7 +67,7 @@
 <text x="452" y="214" text-anchor="middle">R3 10 kΩ</text>
 <text x="570" y="274" text-anchor="middle">R4 10 kΩ</text>
 <text x="534" y="236">Q1</text><text x="646" y="296">Q2</text>
-<text x="538" y="88">R1</text><text class="m" x="538" y="102">820 Ω</text>
-<text x="652" y="88">R2</text><text class="m" x="652" y="102">620 Ω</text>
-<text x="542" y="150">D1 red</text><text x="654" y="150">D2 blue</text>
+<text x="538" y="130">R1</text><text class="m" x="538" y="144">820 Ω</text>
+<text x="652" y="130">R2</text><text class="m" x="652" y="144">620 Ω</text>
+<text x="542" y="90">D1 red</text><text x="654" y="90">D2 blue</text>
 </svg>

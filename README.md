@@ -2,11 +2,19 @@
 
 A small circuit board that goes inside a metal challenge coin. Press the button and a red light and a blue light flash in turn, like a police light. Press again and the lights stop.
 
-![Top view of the board](docs/board.png)
+**Back side.** This side faces the back of the coin. It has the batteries, the chip, and the button.
+
+![Back side of the board](docs/board-back.png)
+
+**Front side.** This side faces the front of the coin. It has the two LEDs. Each LED sits under one light window of the coin.
+
+![Front side of the board](docs/board-front.png)
 
 ## Status
 
-**Revision A. Designed, not built.** The layout passes KiCad's design-rule check and the firmware compiles. No board has been made or tested yet.
+**Revision B. Designed, not built.** The layout passes KiCad's design-rule check and the firmware compiles. No board has been made or tested yet.
+
+Revision A was a first test layout. It is kept under the git tag `rev-a`.
 
 ## What it does
 
@@ -19,17 +27,19 @@ A small circuit board that goes inside a metal challenge coin. Press the button 
 
 | | |
 | --- | --- |
-| Board | 69 mm long, 23 mm wide |
+| Board | 75 mm long, 22 mm wide |
+| Button tab | 11.2 mm wide. It goes 5.4 mm below the middle of the board. |
 | Height with batteries | about 6 mm (estimate) |
 | Batteries | 2 × CR2032 |
-| Lights | 1 red LED and 1 blue LED on the board, or on wires |
-| Button | On the board, or on wires |
+| Lights | 1 red LED and 1 blue LED, on the front side |
+| Distance between the LEDs | 68.35 mm, center to center |
+| Button | 6 mm × 6 mm push button, on the back side |
 
-All parts are on one side of the board.
+The board was sized for a coin that is 95.25 mm wide and 33.17 mm tall, with a metal wall of about 3 mm around the board.
 
-**Lights on wires.** The four pads marked `B+`, `B-`, `R-`, `R+` are for LEDs on short wires. Use them when the light holes in the coin are not above the LEDs on the board. Use the LED on the board or the LED on wires for each color, never both.
+**Lights.** No wires are needed. The red LED and the blue LED are on the front side of the board, 68.35 mm apart. Put the board in the coin so that each LED is under the middle of a light window. The front side is marked `RED` and `BLUE`.
 
-**Button on wires.** The button on the board is 1.5 mm tall. If the coin has its own button, solder its two wires to the pads of `SW1`.
+**Button.** The button is on the back side, on the small tab. Its stem goes through a hole in the back of the coin. The button comes with stems of different heights. Choose the height after the thickness of the coin's back is known.
 
 **Batteries.** Each holder has a `+` mark. Put each battery in with its `+` side up, facing away from the board.
 
@@ -43,17 +53,20 @@ All parts are on one side of the board.
 
 ## Parts
 
-| Ref | Part | JLCPCB part | Note |
-| --- | --- | --- | --- |
-| U1 | ATtiny202-SSNR, SOIC-8 | C2052951 | ATtiny402, 212 and 412 fit the same pads and run the same firmware. |
-| Q1, Q2 | MMBT3904, SOT-23 | C20526 | |
-| R3, R4 | 10 kΩ, 0603 | C25804 | Confirm the part number on JLCPCB. |
-| C1 | 100 nF, 0603 | C14663 | Confirm the part number on JLCPCB. |
-| R1 | 820 Ω, 0603 | choose at order | Sets the red brightness, about 5 mA. |
-| R2 | 620 Ω, 0603 | choose at order | Sets the blue brightness, about 5 mA. |
-| D1, D2 | Red LED and blue LED, 0805 | choose at order | |
-| SW1 | TS-1187A-B-A-B push button | C318884 | |
-| BT1, BT2 | CR2032 holder, Keystone 3034 pads | not matched yet | Not in the JLCPCB placement file. Solder by hand. |
+| Ref | Part | Side | JLCPCB part | Note |
+| --- | --- | --- | --- | --- |
+| U1 | ATtiny202-SSNR, SOIC-8 | Back | C2052951 | ATtiny402, 212 and 412 fit the same pads and run the same firmware. |
+| Q1, Q2 | MMBT3904, SOT-23 | Back | C20526 | |
+| R3, R4 | 10 kΩ, 0603 | Back | C25804 | Confirm the part number on JLCPCB. |
+| C1 | 100 nF, 0603 | Back | C14663 | Confirm the part number on JLCPCB. |
+| R1 | 820 Ω, 0603 | Back | choose at order | Sets the red brightness, about 5 mA. |
+| R2 | 620 Ω, 0603 | Back | choose at order | Sets the blue brightness, about 5 mA. |
+| SW1 | 6 mm × 6 mm SMD push button | Back | choose at order | Choose the stem height to reach through the back of the coin. |
+| BT1, BT2 | CR2032 holder, Keystone 3034 pads | Back | not matched yet | Not in the JLCPCB placement file. Solder by hand. |
+| D1 | Red LED, 1206 | Front | choose at order | |
+| D2 | Blue LED, 1206 | Front | choose at order | |
+
+Parts are on both sides. JLCPCB's cheaper assembly service places one side only. For a few test boards, let JLCPCB place the back side and solder the two LEDs by hand.
 
 ## Files
 
@@ -75,7 +88,7 @@ Firmware, with Docker running:
 firmware/build.sh
 ```
 
-The file for the chip is `firmware/.pio/build/attiny202/firmware.hex`. Load it through the `GND`, `3V` and `UPDI` pads with a UPDI programmer. **Take both batteries out first.** A programmer that powers the `3V` pad would push current into the lower battery.
+The file for the chip is `firmware/.pio/build/attiny202/firmware.hex`. Load it through the `UPDI`, `3V` and `GND` pads on the front side with a UPDI programmer. **Take both batteries out first.** A programmer that powers the `3V` pad would push current into the lower battery.
 
 Board files, with KiCad 10 in `~/Applications/KiCad`:
 
@@ -86,11 +99,12 @@ pcb/export.sh
 ## Known gaps
 
 - Nothing has been built. The LED resistor values come from calculation. They need tuning on a real board.
+- The depth of the space inside the coin is not known yet. Thinner batteries (CR2025 or CR2016) use the same circuit if 6 mm is too much.
 - The lower battery also runs the chip, so it drains a little faster than the upper one while the lights flash.
 - If something holds the button down, the chip sleeps, but its pull-up resistor still draws about 0.1 mA. That would empty the lower battery in about three months.
 - Nothing protects the board from a battery put in upside down.
 - There is no schematic file. The circuit drawing above and `build_board.py` are the design.
-- The rotations in the JLCPCB placement file may need correcting in JLCPCB's preview.
+- The positions and rotations in the JLCPCB placement file may need correcting in JLCPCB's preview, most of all for the two LEDs on the front side.
 
 ## License
 
