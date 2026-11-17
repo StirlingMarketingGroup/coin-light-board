@@ -1,4 +1,4 @@
-"""Builds coin-light-board.kicad_pcb from scratch. Revision B.
+"""Builds coin-light-board.kicad_pcb from scratch. Revision C.
 
 Run with KiCad's own Python (pcb/export.sh does this):
   ~/Applications/KiCad/KiCad.app/Contents/Frameworks/Python.framework/Versions/Current/bin/python3 build_board.py
@@ -27,18 +27,25 @@ OUT = os.path.join(HERE, "coin-light-board.kicad_pcb")
 BACK, FRONT = pcbnew.F_Cu, pcbnew.B_Cu
 
 # The main board is 75 x 22 mm. A tab below the middle carries the button.
+# Two shorter tabs carry the screw holes. The right one joins the button tab.
 BOARD_W, BOARD_H = 75.0, 22.0
 TAB_X0, TAB_X1, TAB_Y1 = 31.4, 43.8, 27.4
+SCREW_TAB_Y1 = 26.6
 OUTLINE = [
-    (0, 0), (BOARD_W, 0), (BOARD_W, BOARD_H), (TAB_X1, BOARD_H),
-    (TAB_X1, TAB_Y1), (TAB_X0, TAB_Y1), (TAB_X0, BOARD_H), (0, BOARD_H),
+    (0, 0), (BOARD_W, 0), (BOARD_W, BOARD_H), (50.0, BOARD_H),
+    (50.0, SCREW_TAB_Y1), (TAB_X1, SCREW_TAB_Y1),
+    (TAB_X1, TAB_Y1), (TAB_X0, TAB_Y1), (TAB_X0, BOARD_H),
+    (25.0, BOARD_H), (25.0, SCREW_TAB_Y1), (18.0, SCREW_TAB_Y1), (18.0, BOARD_H),
+    (0, BOARD_H),
 ]
 
-# The light windows in the coin are 68.35 mm apart and 6.86 mm below the top
-# edge of the board. One LED sits under the middle of each window.
+# The light windows in the sample coin are 67.5 mm apart, from the factory's
+# drawing and caliper photos. The artwork puts them 6.86 mm below the top edge
+# of the board. One LED sits under the middle of each window.
+LED_SPACING = 67.5
 LED_Y = 6.86
-RED_X = BOARD_W / 2 - 68.35 / 2
-BLUE_X = BOARD_W / 2 + 68.35 / 2
+RED_X = BOARD_W / 2 - LED_SPACING / 2
+BLUE_X = BOARD_W / 2 + LED_SPACING / 2
 LED_K_Y, LED_A_Y = LED_Y - 0.94, LED_Y + 0.94
 
 POWER_W, GND_W, SIGNAL_W = 0.5, 0.4, 0.25
@@ -51,6 +58,7 @@ NPN = ("Package_TO_SOT_SMD", "SOT-23")
 HOLDER = ("lib", "BAT-SMD_MY-2032-08")
 BUTTON = ("lib", "KEY-SMD_4P-L6.0-W6.0-P4.50-LS8.6")
 PAD = ("TestPoint", "TestPoint_Pad_D1.5mm")
+HOLE = ("MountingHole", "MountingHole_2.2mm_M2")
 
 # ref: (side, (library, footprint), value, x, y, rotation, {pad: net})
 PARTS = {
@@ -77,6 +85,12 @@ PARTS = {
     # LEDs on the front side, one under each light window. Pad 1 is the cathode.
     "D1": (FRONT, LED, "red", RED_X, LED_Y, 270, {"1": "RK", "2": "VLED"}),
     "D2": (FRONT, LED, "blue", BLUE_X, LED_Y, 270, {"1": "BK", "2": "VLED"}),
+    # M2 screw holes. They sit near the two screw posts of the sample coin,
+    # which photos put about 29 and 54.5 mm from the coin's left inside wall
+    # and about 23 mm from its straight wall. The board starts 8 mm in from
+    # that left wall.
+    "H1": (BACK, HOLE, "M2", 21.5, 24.2, 0, {}),
+    "H2": (BACK, HOLE, "M2", 46.5, 24.2, 0, {}),
     # Programming pads on the front side, 2.54 mm apart, between the chip's pin rows.
     "TP1": (FRONT, PAD, "GND", 30.55, 11.0, 0, {"1": "GND"}),
     "TP2": (FRONT, PAD, "VDD", 33.09, 11.0, 0, {"1": "VMID"}),
@@ -139,7 +153,7 @@ VIAS = [
 # (text, side, x, y)
 LABELS = [
     ("BACK", BACK, 33.3, 3.3),
-    ("REV B", BACK, 33.3, 4.9),
+    ("REV C", BACK, 33.3, 4.9),
     ("FRONT", FRONT, 37.5, 19.2),
     ("UPDI 3V GND", FRONT, 33.1, 13.3),
     ("RED", FRONT, RED_X + 3.2, LED_Y),

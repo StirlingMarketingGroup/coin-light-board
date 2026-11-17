@@ -12,7 +12,7 @@ A small circuit board that goes inside a metal challenge coin. Press the button 
 
 ## Status
 
-**Revision B. Designed, not built.** The layout passes KiCad's design-rule check and the firmware compiles. No board has been made or tested yet.
+**Revision C. Designed, not built.** The layout passes KiCad's design-rule check and the firmware compiles. No board has been made or tested yet.
 
 Revision A was a first test layout. It is kept under the git tag `rev-a`.
 
@@ -29,17 +29,21 @@ Revision A was a first test layout. It is kept under the git tag `rev-a`.
 | --- | --- |
 | Board | 75 mm long, 22 mm wide |
 | Button tab | 12.4 mm wide. It goes 5.4 mm below the middle of the board. |
+| Screw tabs | 2 tabs, each with one hole for an M2 screw. They go 4.6 mm below the long edge. |
+| Screw holes | 2.2 mm wide, 25 mm apart, 24.2 mm from the straight edge |
 | Height with batteries | about 6 mm (estimate) |
 | Batteries | 2 × CR2032 |
 | Lights | 1 red LED and 1 blue LED, on the front side |
-| Distance between the LEDs | 68.35 mm, center to center |
+| Distance between the LEDs | 67.5 mm, center to center |
 | Button | 6 mm × 6 mm push button, on the back side |
 
-The board was sized for a coin that is 95.25 mm wide and 33.17 mm tall, with a metal wall of about 3 mm around the board.
+The board is sized for the sample coin. The coin is 95.47 mm long and 34.15 mm wide. The space inside it is 90.96 mm long and 30.05 mm wide.
 
-**Lights.** No wires are needed. The red LED and the blue LED are on the front side of the board, 68.35 mm apart. Put the board in the coin so that each LED is under the middle of a light window. The front side is marked `RED` and `BLUE`.
+**Lights.** No wires are needed. The red LED and the blue LED are on the front side of the board, 67.5 mm apart. Put the board in the coin so that each LED is under the middle of a light window. The front side is marked `RED` and `BLUE`.
 
 **Button.** The button is on the back side, on the small tab. Its stem goes through a hole in the back of the coin. The button comes with stems of different heights. Choose the height after the thickness of the coin's back is known.
+
+**Screws.** Two M2 screws hold the board in the coin. One hole is 21.5 mm from the left end of the board and one is 46.5 mm from it, seen from the back side. The coin needs a post under each hole.
 
 **Batteries.** Each holder has a `+` mark. Put each battery in with its `+` side up, facing away from the board.
 
