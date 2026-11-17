@@ -55,8 +55,8 @@ If JLCPCB says a part is out of stock, stop and choose a replacement before payi
 JLCPCB shows a picture of where each part will go. KiCad and JLCPCB do not always agree on which way a part faces, so check these before paying. JLCPCB calls the back side "Top" and the front side "Bottom".
 
 - **D1 and D2 (the LEDs, on the Bottom side).** Each LED stands upright, with its two pads above and below each other. The cathode mark must be on the pad nearer the long straight edge, the edge with no tab.
-- **U1 (the chip).** The pin 1 dot must be at the corner nearest C1 and nearest the tab with the button. JLCPCB shows it a quarter turn off: select it and turn it 90° once.
-- **Q1 and Q2.** The single pin of each transistor must sit on the single pad. JLCPCB shows them half a turn off: select each one and turn it 90° twice.
+- **U1 (the chip).** The pin 1 dot must be at the corner nearest C1 and nearest the tab with the button.
+- **Q1 and Q2.** The single pin of each transistor must sit on the single pad.
 - **BT1 and BT2.** Each holder must sit over its three pads: one round pad in the middle and one long pad at each end.
 
 If a part is turned the wrong way, rotate it in the preview.

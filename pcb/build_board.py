@@ -198,6 +198,12 @@ def main():
         for pad in fp.Pads():
             if pad.GetNumber() in pads:
                 pad.SetNet(net(pads[pad.GetNumber()]))
+            # The cell's - side presses on the holder's round pad. Solder paste
+            # there would leave a lump of uneven height under the cell.
+            if (lib, name) == HOLDER and pad.GetNumber() == "2":
+                layers = pad.GetLayerSet()
+                layers.RemoveLayer(pcbnew.F_Paste)
+                pad.SetLayerSet(layers)
         if "--pads" in sys.argv:
             for pad in fp.Pads():
                 p, s = pad.GetPosition(), pad.GetBoundingBox()

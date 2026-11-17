@@ -20,11 +20,17 @@ rm -rf gerbers coin-light-board-gerbers.zip && mkdir gerbers
 (cd gerbers && zip -q ../coin-light-board-gerbers.zip ./*)
 
 # JLCPCB's placement file. The programming pads are bare copper, not parts.
+# JLCPCB's part library turns SOT-23 and SOIC parts differently from KiCad's
+# footprints, so their angles are corrected here.
 "$CLI" pcb export pos -o pos.csv --format csv --units mm --side both "$BOARD"
 {
 	echo "Designator,Mid X,Mid Y,Layer,Rotation"
 	tail -n +2 pos.csv | grep -v '^"TP' |
-		awk -F, '{ gsub(/"/, "", $1); printf "%s,%.3fmm,%.3fmm,%s,%d\n", $1, $4, $5, ($7 ~ /bottom/ ? "Bottom" : "Top"), $6 }'
+		awk -F, '{
+			gsub(/"/, "", $1); gsub(/"/, "", $3)
+			turn = ($3 ~ /^SOT-23/ ? 180 : ($3 ~ /^SOIC-/ ? 270 : 0))
+			printf "%s,%.3fmm,%.3fmm,%s,%d\n", $1, $4, $5, ($7 ~ /bottom/ ? "Bottom" : "Top"), ($6 + turn + 360) % 360
+		}'
 } > jlcpcb-cpl.csv
 rm pos.csv
 
